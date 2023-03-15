@@ -1,0 +1,2 @@
+scripts/install_mmdetection.sh
+scripts/download_data.sh

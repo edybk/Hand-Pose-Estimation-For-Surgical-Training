@@ -1,0 +1,1 @@
+python validate_installation.py
