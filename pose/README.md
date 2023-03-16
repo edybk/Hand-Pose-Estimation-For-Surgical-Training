@@ -1,4 +1,4 @@
-# Training on the Open Surgery Simulation Dataset with MMDetection
+# Training on the Open Surgery Simulation Dataset with MMPose
 
 - Install MMPose and download the dataset:
     ```
