@@ -1,7 +1,7 @@
 import mmcv
 from mmcv.runner import load_checkpoint
 
-from mmdet.apis import inference_detector, show_result_pyplot
+from mmdet.apis import inference_detector
 from mmdet.models import build_detector
 
 # Choose to use a config and initialize the detector
@@ -38,4 +38,4 @@ model.eval()
 img = 'mmdetection/data/apas_allclass/coco/images/P020_balloon1_4235.jpg'
 result = inference_detector(model, img)
 # Let's plot the result
-show_result_pyplot(model, img, result, score_thr=0.75)
+model.show_result(img, result, score_thr=0.75, out_file = "detection_results.png")
