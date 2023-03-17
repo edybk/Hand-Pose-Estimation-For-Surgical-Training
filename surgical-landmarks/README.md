@@ -21,12 +21,10 @@ Reproducing the experiments:
     ```
 - Generating the pose dataset based on the trained detection and pose models
     ```
-    ./generate_dataset.sh
+    python generate_dataset.py
     ```
-- Post-processsing the dataset (includes imputation and smoothing)
-    ```
-    ./post_process_dataset.sh
-    ```
+    to visualize the detections run with --draw true
+    
 - Training a multi-task action segmentation model
 
 - Visualizing the segmentation performance on a sample video
