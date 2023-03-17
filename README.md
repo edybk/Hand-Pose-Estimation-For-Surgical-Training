@@ -8,3 +8,5 @@ The repository contains code to reproduce the following experiments:
 - Train a multi-task action segmentation model on I3D and pose inputs
 - Visualize the results 
 - Calculate surgical skill proxies based on the poses and detections
+
+The experiments were conducted using python 3.7 and CUDA 11 on a Tesla V100 GPU with 32GB memory.
