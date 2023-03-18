@@ -161,7 +161,7 @@ def postprocess_dataset(videos_dir, combined_path, out_root, visualize):
         out_video_path = os.path.join(out_root,
                             f'{os.path.basename(video_file)}.smooth.vis.wmv')
         out_export_path = os.path.join(out_root,
-                            f'{os.path.basename(video_file)}.smooth.npy')
+                            f'{os.path.basename(video_file.replace(".wmv", ""))}.npy')
         print(out_video_path)
 
         out_video_blank_path = os.path.join(out_root,

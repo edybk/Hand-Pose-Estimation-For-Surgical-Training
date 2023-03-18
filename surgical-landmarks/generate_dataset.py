@@ -6,6 +6,7 @@ from src.scripts.exports_to_features import convert
 from src.scripts.combine_poses_with_detections import combine
 from src.scripts.convert_combined_poses_with_detections_to_centers import convert_centers
 from src.scripts.export_smoothened import postprocess_dataset
+from src.scripts.download_apas_tcn_v2 import prepare_dataset
 
 repository_root = os.getenv("REPOSITORY_ROOT")
 
@@ -61,3 +62,6 @@ postprocess_dataset(
     out_root=smooth_out_root,
     visualize=args.draw
 )
+
+data_root = os.path.join(repository_root, "surgical-landmarks", "data")
+prepare_dataset(data_root, smooth_out_root)
