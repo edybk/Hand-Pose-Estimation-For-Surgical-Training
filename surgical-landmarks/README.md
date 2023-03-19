@@ -74,5 +74,7 @@ Reproducing the experiments:
     ```
     python run.py --action visualize --model MHTCN2 --multitask --dataset apas_tcn_v2 --features_dim 4288 --custom-features i3d_both_split1 --append_split_to_features --appended-features $REPOSITORY_ROOT/surgical-landmarks/data/apas_tcn_v2/appended_features/smooth_final_multiview.json --num_layers_R=10 --num_layers_PG=11 --num_f_maps=64 --num_R=1 --lr=0.001 --split 1 --ckpt "1HTMZHVMATuabr0umGcGdEMlXiPY2YxDW" --vid-name P016_balloon1
     ```
+    ![image](https://user-images.githubusercontent.com/12495665/226204079-191114b0-76f0-428b-a822-8afd30951380.png)
+
 - Calculating surgical skill proxies
 
