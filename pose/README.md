@@ -16,5 +16,6 @@
     ```
     ./visualize.sh
     ```
-    ![image](https://user-images.githubusercontent.com/12495665/226204321-20cbe22a-a790-455f-b934-73a513538624.png)
+    ![image](https://user-images.githubusercontent.com/12495665/226204481-ead045f8-c80d-45ec-bbb1-b68a60e46a76.png)
+
 
