@@ -354,28 +354,6 @@ def pose_velocity(keypoints1:np.ndarray, keypoints2:np.ndarray):
     return np.concatenate((x, y), axis=1)
 
 
-def pose_accelleration(keypoints1:np.ndarray, keypoints2:np.ndarray, keypoints3:np.ndarray):
-    """_summary_
-
-    Args:
-        keypoints1 (np.ndarray): of shape 21, 3
-        keypoints2 (np.ndarray): of shape 21, 3
-
-    Returns:
-        np.ndarray: of shape 21,2
-    """
-    x_v1 = velocity(keypoints1[:, 0], keypoints2[:, 0])
-    x_v2 = velocity(keypoints2[:, 0], keypoints3[:, 0])
-    x = velocity(x_v1, x_v2)
-    x = x.reshape(21, 1)
-    # print(x.shape)
-    
-    y_v1 = velocity(keypoints1[:, 1], keypoints2[:, 1])
-    y_v2 = velocity(keypoints2[:, 1], keypoints3[:, 1])
-    y = velocity(y_v1, y_v2)
-    y = y.reshape(21, 1)
-    # print(y.shape)
-    return np.concatenate((x, y), axis=1)
 
 def combine_poses_with_detections(vid_poses, vid_detections):
     # print(vid_poses.shape)
