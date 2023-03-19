@@ -3,7 +3,9 @@ from dataclasses import asdict
 import glob
 import json
 import os
+import zipfile
 import torch
+import gdown
 from src.common import init_features_path, init_gt, init_model, init_seed, init_vid_list_files, load_json
 from src.configs.base import BatchGeneratorConfig, ModelConfig, TrainConfig
 from src.dataset.batch_generator import BatchGenerator
@@ -168,6 +170,19 @@ def run(split=args.split, custom_features=args.custom_features):
 
 
     # Load model
+
+    if args.ckpt:
+        downloads_dir = "./downloads/"
+        ckpt_path = os.path.join(downloads_dir, args.ckpt)
+        if not os.path.exists(args.ckpt) and not os.path.exists(ckpt_path):
+            print(f"checkpoint path doesn't exist, attempting to download from google drive")
+            os.makedirs(downloads_dir, exist_ok=True)
+            gdown.download(id=args.ckpt, output=ckpt_path, quiet=False)
+            args.ckpt = ckpt_path
+        elif not os.path.exists(args.ckpt) and os.path.exists(ckpt_path):
+            print(f"checkpoint was already downloaded, using cached version from ./downloads/ folder")
+            args.ckpt = ckpt_path
+
 
     model_config = ModelConfig(model=args.model, features_dim=features_dim, num_classes=num_classes, num_f_maps=num_f_maps,
                                     num_layers_PG=num_layers_PG, num_layers_R=num_layers_R, num_R=num_R,
