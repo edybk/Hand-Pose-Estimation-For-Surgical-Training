@@ -56,7 +56,8 @@ def prepare_features(download_location, data_root):
     os.remove(frontal_zip_path)
 
     apas_tcn_v2_path = os.path.join(data_root, "apas_tcn_v2")
-    os.symlink(os.path.join(i3d_features_root, "frontal", "i3d"), os.path.join(apas_tcn_v2_path, "i3d_frontal"), target_is_directory=True)
+    for i in range(1, 6):
+        os.symlink(os.path.join(i3d_features_root, "frontal", "i3d", f"split{i}"), os.path.join(apas_tcn_v2_path, f"i3d_frontal_split{i}"), target_is_directory=True)
 
     # closeup
     closeup_zip_id = "1wgBazc8bxy22iEySaTmdl8uwa4koMdPj"
@@ -69,8 +70,8 @@ def prepare_features(download_location, data_root):
 
     os.remove(closeup_zip_path)
 
-    os.symlink(os.path.join(i3d_features_root, "closeup", "i3d"), os.path.join(apas_tcn_v2_path, "i3d_closeup"), target_is_directory=True)
-
+    for i in range(1, 6):
+        os.symlink(os.path.join(i3d_features_root, "closeup", "i3d", f"split{i}"), os.path.join(apas_tcn_v2_path, f"i3d_closeup_split{i}"), target_is_directory=True)
 
     # both views
     both_zip_id = "1bLbJ1B0Z5BHIOY1nzPxhCHTX2sWTAqJq"
@@ -82,7 +83,8 @@ def prepare_features(download_location, data_root):
         
     os.remove(both_zip_path)
 
-    os.symlink(os.path.join(i3d_features_root, "both", "i3d"), os.path.join(apas_tcn_v2_path, "i3d_both"), target_is_directory=True)
+    for i in range(1, 6):
+        os.symlink(os.path.join(i3d_features_root, "both", "i3d", f"split{i}"), os.path.join(apas_tcn_v2_path, f"i3d_both_split{i}"), target_is_directory=True)
 
 
     
