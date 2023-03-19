@@ -202,11 +202,24 @@ def calculate_bbox_area(bbox):
     x1, y1, x2, y2, conf = bbox
     return abs(x2-x1) * abs(y2-y1)
 
+def calculate_bbox_aspect_ratio(bbox):
+    x1, y1, x2, y2 = bbox[0], bbox[1], bbox[2], bbox[3]
+    width = distance_between_points(x1, y1, x1, y2)
+    height = distance_between_points(x1, y2, x2, y2)
+    try:
+        return (width/height)
+    except:
+        return 0
+
 def calculate_bbox_center(bbox):
     x1, y1, x2, y2 = bbox[0], bbox[1], bbox[2], bbox[3]
     x = x1+(x2-x1)/2
     y = y1+(y2-y1)/2
     return(x,y)
+
+def calculate_bbox_bottom_right_corner(bbox):
+    x1, y1, x2, y2 = bbox[0], bbox[1], bbox[2], bbox[3]
+    return (x2, y2)
 
 def int_calculate_bbox_center(bbox):
     (x,y) = calculate_bbox_center(bbox)
@@ -420,14 +433,162 @@ def convert_combined_poses_and_detections_to_centers(combined_features):
 
 
 
+def convert_combined_poses_and_detections_to_centers_and_boundaries(combined_features):
+    
+    def load_raw_combined(combined):
+        combined = combined.transpose()
+        vid_len = combined.shape[0]
+        vid_hands = combined[:, :21*3+5+21*3+5]
+        left_keypoints = vid_hands[:, :21*3]
+        left_keypoints = left_keypoints.reshape((-1, 21, 3))
+        left_bbox = vid_hands[:, 21*3:21*3+5]
+        left_bbox = left_bbox.reshape((vid_len, 5))
+        right_keypoints = vid_hands[:, 21*3+5:21*3+5+21*3]
+        right_keypoints = right_keypoints.reshape((-1, 21, 3))
+        right_bbox = vid_hands[:, -5:]
+        right_bbox = right_bbox.reshape((vid_len, 5))
+        vid_tools = combined[:, 21*3+5+21*3+5:]
+        vid_tools = vid_tools.reshape((vid_len, -1, 5))
+        # print(vid_dets.shape)
+        return left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools
+
+    def get_combined_for_frame(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools, frame_id):
+        return left_keypoints[frame_id], left_bbox[frame_id], right_keypoints[frame_id], right_bbox[frame_id], vid_tools[frame_id]
+
+    def convert_frame_features(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools):
+        # print(left_bbox.shape)
+        # raise ""
+        left_center = calculate_bbox_center(left_bbox)
+        right_center = calculate_bbox_center(right_bbox)
+        tools_centers = []
+        for bbox in vid_tools:
+            tools_centers.append(list(calculate_bbox_center(bbox)))
+        combined_centers_for_frame = np.concatenate((left_keypoints[:, :2].flatten(), 
+                                                    np.array(list(left_center)).flatten(), 
+                                                    left_bbox[:4].flatten(),
+                                                    
+                                                    right_keypoints[:, :2].flatten(),
+                                                    np.array(list(right_center)).flatten(), 
+                                                    right_bbox[:4].flatten(),
+                                                    
+                                                    np.array(tools_centers).flatten(),
+                                                    np.array(vid_tools[:, :4]).flatten()))
+        return combined_centers_for_frame
+    left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools = load_raw_combined(combined_features)
+    converted = []
+    for frame_id in range(combined_features.shape[1]):
+        _left_keypoints, _left_bbox, _right_keypoints, _right_bbox, _vid_tools = get_combined_for_frame(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools, frame_id)
+        converted.append(convert_frame_features(_left_keypoints, _left_bbox, _right_keypoints, _right_bbox, _vid_tools))
+    converted = np.array(converted)
+    return converted.transpose()
 
 
 
 
+def convert_combined_poses_and_detections_to_centers_and_thresholds(combined_features):
+    
+    def load_raw_combined(combined):
+        combined = combined.transpose()
+        vid_len = combined.shape[0]
+        vid_hands = combined[:, :21*3+5+21*3+5]
+        left_keypoints = vid_hands[:, :21*3]
+        left_keypoints = left_keypoints.reshape((-1, 21, 3))
+        left_bbox = vid_hands[:, 21*3:21*3+5]
+        left_bbox = left_bbox.reshape((vid_len, 5))
+        right_keypoints = vid_hands[:, 21*3+5:21*3+5+21*3]
+        right_keypoints = right_keypoints.reshape((-1, 21, 3))
+        right_bbox = vid_hands[:, -5:]
+        right_bbox = right_bbox.reshape((vid_len, 5))
+        vid_tools = combined[:, 21*3+5+21*3+5:]
+        vid_tools = vid_tools.reshape((vid_len, -1, 5))
+        # print(vid_dets.shape)
+        return left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools
+
+    def get_combined_for_frame(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools, frame_id):
+        return left_keypoints[frame_id], left_bbox[frame_id], right_keypoints[frame_id], right_bbox[frame_id], vid_tools[frame_id]
+
+    def convert_frame_features(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools):
+        # print(left_bbox.shape)
+        # raise ""
+        left_center = calculate_bbox_center(left_bbox)
+        left_threshold = left_bbox[4:]
+        right_center = calculate_bbox_center(right_bbox)
+        right_threshold = right_bbox[4:]
+        tools_centers = []
+        for bbox in vid_tools:
+            tools_centers.append(list(calculate_bbox_center(bbox)))
+        combined_centers_for_frame = np.concatenate((left_keypoints[:, :3].flatten(), 
+                                                    np.array(list(left_center)).flatten(), 
+                                                    np.array(list(left_threshold)).flatten(),
+                                                    
+                                                    right_keypoints[:, :2].flatten(),
+                                                    np.array(list(right_center)).flatten(), 
+                                                    np.array(list(right_threshold)).flatten(),
+                                                    
+                                                    np.array(tools_centers).flatten(),
+                                                    np.array(vid_tools[:, 4]).flatten()))
+        return combined_centers_for_frame
+    left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools = load_raw_combined(combined_features)
+    converted = []
+    for frame_id in range(combined_features.shape[1]):
+        _left_keypoints, _left_bbox, _right_keypoints, _right_bbox, _vid_tools = get_combined_for_frame(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools, frame_id)
+        converted.append(convert_frame_features(_left_keypoints, _left_bbox, _right_keypoints, _right_bbox, _vid_tools))
+    converted = np.array(converted)
+    return converted.transpose()
 
 
 
+def convert_combined_poses_and_detections_to_centers_and_boundaries_and_thresholds(combined_features):
+    
+    def load_raw_combined(combined):
+        combined = combined.transpose()
+        vid_len = combined.shape[0]
+        vid_hands = combined[:, :21*3+5+21*3+5]
+        left_keypoints = vid_hands[:, :21*3]
+        left_keypoints = left_keypoints.reshape((-1, 21, 3))
+        left_bbox = vid_hands[:, 21*3:21*3+5]
+        left_bbox = left_bbox.reshape((vid_len, 5))
+        right_keypoints = vid_hands[:, 21*3+5:21*3+5+21*3]
+        right_keypoints = right_keypoints.reshape((-1, 21, 3))
+        right_bbox = vid_hands[:, -5:]
+        right_bbox = right_bbox.reshape((vid_len, 5))
+        vid_tools = combined[:, 21*3+5+21*3+5:]
+        vid_tools = vid_tools.reshape((vid_len, -1, 5))
+        # print(vid_dets.shape)
+        return left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools
 
+    def get_combined_for_frame(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools, frame_id):
+        return left_keypoints[frame_id], left_bbox[frame_id], right_keypoints[frame_id], right_bbox[frame_id], vid_tools[frame_id]
+
+    def convert_frame_features(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools):
+        # print(left_bbox.shape)
+        # raise ""
+        left_center = calculate_bbox_center(left_bbox)
+        right_center = calculate_bbox_center(right_bbox)
+        tools_centers = []
+        for bbox in vid_tools:
+            tools_centers.append(list(calculate_bbox_center(bbox)))
+        combined_centers_for_frame = np.concatenate((left_keypoints[:, :3].flatten(), 
+                                                    np.array(list(left_center)).flatten(), 
+                                                    left_bbox[:4].flatten(),
+                                                    np.array(list(left_bbox[4:])).flatten(),
+                                                    
+                                                    right_keypoints[:, :2].flatten(),
+                                                    np.array(list(right_center)).flatten(), 
+                                                    right_bbox[:4].flatten(),
+                                                    np.array(list(right_bbox[4:])).flatten(),
+                                                    
+                                                    np.array(tools_centers).flatten(),
+                                                    np.array(vid_tools[:, :4]).flatten(),
+                                                    np.array(vid_tools[:, 4]).flatten()))
+        return combined_centers_for_frame
+    left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools = load_raw_combined(combined_features)
+    converted = []
+    for frame_id in range(combined_features.shape[1]):
+        _left_keypoints, _left_bbox, _right_keypoints, _right_bbox, _vid_tools = get_combined_for_frame(left_keypoints, left_bbox, right_keypoints, right_bbox, vid_tools, frame_id)
+        converted.append(convert_frame_features(_left_keypoints, _left_bbox, _right_keypoints, _right_bbox, _vid_tools))
+    converted = np.array(converted)
+    return converted.transpose()
 
 
 
