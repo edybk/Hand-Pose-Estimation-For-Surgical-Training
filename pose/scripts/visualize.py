@@ -43,7 +43,6 @@ vis_result = vis_pose_result(
 
 # reduce image size
 import cv2
-vis_result = cv2.resize(vis_result, dsize=None, fx=0.5, fy=0.5)
 
 import tempfile
 import os.path as osp
