@@ -4,10 +4,6 @@ from src.dataset.utils import convert_combined_poses_and_detections_to_centers
 from tqdm import tqdm
 
 
-
-# combined_poses_with_detections_path = "/data/home/bedward/datasets/APAS-Activities-Eddie/keypoints/resnet_raw_apas_yolox_separate_hands/frontal_view/features_with_tool_bboxes/"
-# output_path = "/data/home/bedward/datasets/APAS-Activities-Eddie/keypoints/resnet_raw_apas_yolox_separate_hands/frontal_view/features_with_tool_bboxes_centers/"
-
 def convert_centers(combined_path, output_path):
 
     os.makedirs(output_path, exist_ok=True)

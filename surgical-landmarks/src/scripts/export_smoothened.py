@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 # from src.models.detection.apas_cascadercnn_finetuned import APASCascadeRCNNDetModel
 from src.models.detection.apas_yolox_allclass import AllClassAPASYOLOXDetModel
 from src.models.pose.resnet import TwoHandsResnetPoseModel
-pose_model = TwoHandsResnetPoseModel(AllClassAPASYOLOXDetModel()).pose_model
+pose_model = TwoHandsResnetPoseModel(AllClassAPASYOLOXDetModel(), left_cat=2, right_cat=1).pose_model
 
 categories = [
                 {

@@ -5,11 +5,6 @@ import os
 from src.dataset.utils import combine_poses_with_detections
 from tqdm import tqdm
 
-# separate_hands_poses_features_path:str = "/data/home/bedward/datasets/APAS-Activities-Eddie/keypoints/resnet_raw_apas_yolox_separate_hands/frontal_view/features/"
-# all_class_detection_bboxes_features_path:str = "/data/home/bedward/datasets/APAS-Activities-Eddie/bboxes/resnet_raw_apas_yolox_allclass/frontal_view/features/"
-
-# output_path = "/data/home/bedward/datasets/APAS-Activities-Eddie/keypoints/resnet_raw_apas_yolox_separate_hands/frontal_view/features_with_tool_bboxes/"
-
 def combine(poses_path, detections_path, output_path):
 
     os.makedirs(output_path, exist_ok=True)

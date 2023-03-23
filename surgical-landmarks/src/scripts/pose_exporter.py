@@ -18,14 +18,18 @@ from src.models.pose_enhancer.raw import TwoHandRawPoseEnhancer
 
 def get_det_model(name) -> DetectionModel:
     if name == 'apas_yolox_2hands':
-        return TwoHandAPASYOLOXDetModel()
+        left_hand_cat_id = 1
+        right_hand_cat_id = 2
+        return TwoHandAPASYOLOXDetModel(), left_hand_cat_id, right_hand_cat_id
     if name == 'apas_yolox_allclass':
-        return AllClassAPASYOLOXDetModel(detection_categories=[0, 1])
+        left_hand_cat_id = 2
+        right_hand_cat_id = 1
+        return AllClassAPASYOLOXDetModel(detection_categories=[0, 1]), left_hand_cat_id, right_hand_cat_id
     raise "unknown det model"
 
-def get_pose_model(detection_model, name) -> TwoHandPoseModel:
+def get_pose_model(detection_model, left_hand_cat_id, right_hand_cat_id, name) -> TwoHandPoseModel:
     if name == 'resnet':
-        return TwoHandsResnetPoseModel(detection_model)
+        return TwoHandsResnetPoseModel(detection_model, left_cat=left_hand_cat_id, right_cat=right_hand_cat_id)
     raise "unknown pose model"
 
 def get_pose_enhancer(name) -> TwoHandPoseEnhancer:
@@ -77,8 +81,8 @@ def process_video(pose_model:TwoHandPoseModel, pose_enhancer:TwoHandPoseEnhancer
         
 
 def export(det_model, pose_model, pose_enhancer, clip_root, out_root, visualize):
-    detection_model: DetectionModel = get_det_model(det_model)
-    pose_model:TwoHandPoseModel = get_pose_model(detection_model, pose_model)
+    detection_model, left_hand_cat_id, right_hand_cat_id = get_det_model(det_model)
+    pose_model:TwoHandPoseModel = get_pose_model(detection_model, left_hand_cat_id, right_hand_cat_id, pose_model)
     pose_enhancer:TwoHandPoseEnhancer = get_pose_enhancer(pose_enhancer)
     all_clips = [join(clip_root, f) for f in os.listdir(clip_root) if isfile(join(clip_root, f))]
     for clip_path in tqdm(all_clips):
