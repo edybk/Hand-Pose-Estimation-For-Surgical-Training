@@ -1303,8 +1303,8 @@ def visualize(dataset_root, video_file, vleft_keypoints, vleft_center, vleft_bbo
         if demo:
             # print(f"stopat={stopat}, frame_num={frame_num}, frame_count={frame_count}")
             if (not stopat and frame_num == 399) or (stopat and frame_num == stopat) or frame_num == frame_count-10:
-                cv2.imwrite(f'./vis_results/visualize_proxy_{proxy_instance.name()}.png', first_frame)
-                cv2.imwrite(f'./vis_results/visualize_proxy_{proxy_instance.name()}_blank.png', blank_frame)
+                cv2.imwrite(os.path.join("vis_results", "visualize_proxies", f'visualize_proxy_{proxy_instance.name()}.png'), first_frame)
+                cv2.imwrite(os.path.join("vis_results", "visualize_proxies", f'visualize_proxy_{proxy_instance.name()}_blank.png'), blank_frame)
                 break
         else:
             videoWriter.write(first_frame)
