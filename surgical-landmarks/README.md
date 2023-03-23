@@ -51,5 +51,17 @@ Reproducing the experiments:
     ```
     ![image](https://user-images.githubusercontent.com/12495665/226204079-191114b0-76f0-428b-a822-8afd30951380.png)
 
-- Calculating surgical skill proxies
+- Analyzing surgical skill proxies
+    ```
+    python surgical_skill_proxies.py visualize
+    ```
+- Exporting the proxy values for all videos
+    ```
+    python surgical_skill_proxies.py export
+    ```
+- Plotting the population mean and box plots
+    ```
+    python surgical_skill_proxies.py plot --download
+    ```
+    If you exported the proxies for all videos, you can also run on your own exports with --no-download
 
