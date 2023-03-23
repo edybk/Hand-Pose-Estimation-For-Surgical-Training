@@ -55,6 +55,16 @@ Reproducing the experiments:
     ```
     python surgical_skill_proxies.py visualize
     ```
+    Regular             |  Blank
+    :-------------------------:|:-------------------------:
+    ![visualize_proxy_HandOrientationProxy_right](https://user-images.githubusercontent.com/12495665/227071452-4d0f6c85-5326-4452-8ab2-692a7af726db.png)  |  ![visualize_proxy_HandOrientationProxy_right_blank](https://user-images.githubusercontent.com/12495665/227071461-ce0f355b-75e4-4f49-b0b9-bb0700313f14.png)
+    ![visualize_proxy_KPDistanceProxy_right_4_8](https://user-images.githubusercontent.com/12495665/227071477-f63de588-307c-466c-befe-53a4049ffff6.png)  |  ![visualize_proxy_KPDistanceProxy_right_4_8_blank](https://user-images.githubusercontent.com/12495665/227071504-035bc54a-4a71-4529-aedf-71a59e83ee8e.png)
+    ![visualize_proxy_KPVelocityProxy_right_8](https://user-images.githubusercontent.com/12495665/227071518-882861a4-d1a6-4ff5-ae73-08d8d97c2e8c.png)  |  ![visualize_proxy_KPVelocityProxy_right_8_blank](https://user-images.githubusercontent.com/12495665/227071530-cfe84521-f701-4c91-8833-375b63d4ae52.png)
+    
+    
+    
+    
+
 - Exporting the proxy values for all videos
     ```
     python surgical_skill_proxies.py export
@@ -65,3 +75,6 @@ Reproducing the experiments:
     ```
     If you exported the proxies for all videos, you can also run on your own exports with --no-download
 
+    ![bar_chart_HandOrientationProxy_left](https://user-images.githubusercontent.com/12495665/227071618-4eee593e-1452-44f2-b173-d7ecb5f7785c.png)
+    ![box_plot_HandOrientationProxy_left](https://user-images.githubusercontent.com/12495665/227071649-7da977f0-93f0-4047-9fab-3a6b8c7d4a25.png)
+    
