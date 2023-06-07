@@ -1,6 +1,6 @@
 # Using Hand Pose Estimation To Automate Surgical Training Feedback
 
-This is the official implementation of the paper [Using Hand Pose Estimation To Automate Surgical Training Feedback](http://google.com).
+This is the official implementation of the paper [Using Hand Pose Estimation To Automate Surgical Training Feedback](https://doi.org/10.1007/s11548-023-02947-6).
 The repository contains code to reproduce the following experiments:
 - [Train an object detection model on the Open Surgery Simulation Dataset](detection/README.md)
 - [Train a pose estimation model on the Open Surgery Simulation Dataset](pose/README.md)
