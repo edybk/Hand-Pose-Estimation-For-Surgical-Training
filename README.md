@@ -12,3 +12,8 @@ The repository contains code to reproduce the following experiments:
   - Calculate surgical skill proxies based on the poses and detections
 
 The experiments were conducted using python 3.7 and CUDA 11 on a Tesla V100 GPU with 32GB memory.
+
+[Scalpel Lab Website](https://scalpel.group)
+
+### Citation
+Bkheet, E., D’Angelo, AL., Goldbraikh, A. et al. Using hand pose estimation to automate open surgery training feedback. Int J CARS (2023). https://doi.org/10.1007/s11548-023-02947-6
